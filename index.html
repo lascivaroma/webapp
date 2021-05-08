@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+	<style type="text/css">
+		/* cyrillic-ext */
+		@font-face {
+			font-family: 'Roboto';
+			font-style: normal;
+			font-weight: 100;
+			font-display: swap;
+			src: url("assets/fonts/Roboto-Regular.ttf") format('woff2');
+			unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+		}
+		.navbar, h1, h2, h3, h4 {
+			font-family: "Roboto", sans-serif;;
+		}
+		body {
+			margin:0;
+			padding:0;
+			position: relative;
+		}
+		header {
+			height: 570px;
+			background-image: url("./assets/images/banner.png");
+			background-position: center;
+			display: block;
+			color: #fff;
+		}
+		.header-inside {
+			background-color: rgba(0,0,0,0.55);
+			height:100%;
+		}
+		.welcome {
+			padding-top: 200px;
+		}
+		.welcome input[type="text"] {
+			background-color: rgba(255,255,255,0.55);
+		}
+		.welcome input[type="text"]::placeholder {
+			font-weight: bolder;
+			color: #343a40;
+		}
+		main {
+			min-height:300px;
+			padding-bottom: 170px;
+			margin-top: 2em;
+		}
+		footer {
+			display: block;
+			height:150px;
+			background-color:#282d32;
+			color: #f0f9ff;
+			position: absolute;
+			bottom: 0; left: 0; right: 0;
+			width: 100%;
+		}
+		.leda {
+			margin:0 auto;
+			display: block;
+			height: 150px;
+		}
+	</style>
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container-fluid">
+				<a class="navbar-brand" href="#">Lasciva Roma</a>
+				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item">
+							<a class="nav-link active" aria-current="page" href="#">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Annotated Corpus</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="#">Lemmatized Priapea</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Is my excerpt sexual ? (Soon)</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+	</nav>
+	<header>
+		<div class="header-inside">
+			<div class="container welcome">
+				<h1>Welcome to the Lasciva Roma project</h1>
+				<form method="GET">
+					<div class="input-group mb-3">
+						<input type="text" class="form-control outline" placeholder="Search in the database" aria-label="Search in the database" aria-describedby="button-addon1">
+						<button class="btn btn-lg btn-outline-primary" type="button" id="button-addon1">Search</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</header>
+	<main class="container">
+		<section>
+			<h2>Content</h2>
+		</section>
+	</main>
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-3">
+					<img src="./assets/images/leda.png" alt="Roman oil lamp with Leda" class="leda" height="100%" width="auto" />
+				</div>
+				<div class="col-9">
+					COLOPHON
+				</div>
+			</div>
+		</div>
+	</footer>
+</body>
+</html>
