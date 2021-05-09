@@ -1,0 +1,3 @@
+[submodule "data/these-corpus"]
+	path = data/these-corpus
+	url = git@github.com:PonteIneptique/these-corpus.git
