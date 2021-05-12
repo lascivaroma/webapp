@@ -1,0 +1,17 @@
+{% extends "container.html" %}
+
+{% block header %}
+<header>
+    <div class="header-inside">
+        <div class="container welcome">
+            <h1>Welcome to the Lasciva Roma project</h1>
+            <form method="GET" action="{{ url_for("search") }}">
+                <div class="input-group mb-3">
+                    <input name="q" type="text" class="form-control outline" placeholder="Search in the database" aria-label="Search in the database" aria-describedby="button-addon1">
+                    <button class="btn btn-lg btn-outline-primary" type="button" id="button-addon1">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</header>
+{% endblock %}

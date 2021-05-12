@@ -1,0 +1,12 @@
+{% extends "container.html" %}
+{% block css %}
+<style type="text/css">
+.analyzed {
+    font-weight: bold;
+    color:#333333;
+}
+</style>
+{% endblock %}
+{% block body %}
+    {{ content | safe }}
+{% endblock %}

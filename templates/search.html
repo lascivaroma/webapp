@@ -1,0 +1,59 @@
+{% extends "container.html" %}
+
+{% block css %}
+    <style type="text/css">
+    .card {
+        margin-bottom: 1rem;
+    }
+    </style>
+{% endblock %}
+{% block header %}
+<form method="GET" action="{{ url_for("search") }}">
+    <div class="input-group mb-3">
+        <input name="q" type="text" class="form-control outline" placeholder="Search in the database" aria-label="Search in the database" aria-describedby="button-addon1">
+        <button class="btn btn-lg btn-outline-primary" type="button" id="button-addon1">Search</button>
+    </div>
+</form>
+{% endblock %}
+{% block body %}
+    <p>{{ results.total }} résultats.</p>
+{% for result in results %}
+<div class="card">
+  <div class="card-header">
+    {{result.author}}, <i>{{result.title}}</i>, {{result.ref}}
+  </div>
+  <div class="card-body">
+    <blockquote class="blockquote mb-0">
+      <p>
+          {% if query %}{{result.highlights("body") | safe}}{% else %}{{ result.body }}{% endif %}
+          <a href="{{ url_for('excerpt_read', unit=result.id) }}" class="btn btn-primary btn-sm">More...</a>
+      </p>
+    </blockquote>
+    <hr />
+      <div>
+          {%  for tag in result.tags.split() %}<a href="{{ url_for('search', tags=tag) }}" class="btn btn-sm btn-success">{{tag}}</a> {% endfor %}
+      </div>
+  </div>
+</div>
+{% endfor %}
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    {%  if results.pagenum > 1 %}
+        <li class="page-item"><a class="page-link" href="{{ url_for("search", q=query, tags=tags, page=results.pagenum-1) }}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="{{ url_for("search", q=query, tags=tags, page=1) }}">1</a></li>
+        {%  if results.pagenum - 1 > 1 %}
+            <li class="page-item"><a class="page-link" href="{{ url_for("search", q=query, tags=tags, page=results.pagenum-1) }}">{{results.pagenum-1}}</a></li>
+        {% endif %}
+    {% endif %}
+    <li class="page-item active"><a class="page-link" href="{{ url_for("search", q=query, tags=tags, page=results.pagenum) }}">{{ results.pagenum}}</a></li>
+    {%  if results.pagenum < results.pagecount %}
+        <li class="page-item"><a class="page-link" href="{{ url_for("search", q=query, tags=tags, page=results.pagenum+1) }}">{{ results.pagenum + 1}}</a></li>
+        {%  if results.pagenum + 1 < results.pagecount %}
+            <li class="page-item"><a class="page-link" href="{{ url_for("search", q=query, tags=tags, page=results.pagecount) }}">{{results.pagecount}}</a></li>
+        {% endif %}
+        <li class="page-item"><a class="page-link" href="{{ url_for("search", q=query, tags=tags, page=results.pagenum+1) }}">Next</a></li>
+    {% endif %}
+  </ul>
+</nav>
+{% endblock %}
