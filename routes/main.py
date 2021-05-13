@@ -1,9 +1,10 @@
 import os.path
 from flask import render_template, request, url_for
 from whoosh.qparser import QueryParser
-from whoosh.query import Term
+from whoosh.query import Term, And, Every
 import lxml.etree as ET
-from app import app, index, Excerpt, ROOT_DIR
+
+from ..app import app, index, Excerpt, ROOT_DIR
 
 
 def get_tags(_, tag_list):
@@ -20,7 +21,11 @@ def url_for_tags(_, tag):
 
 
 def url_for_bibl(_, bibl):
-    return url_for(".search", q=bibl[0])
+    return url_for(".search", bibliography=bibl[0].replace("#", ""))
+
+
+def url_for_adams_page(_, page):
+    return url_for(".search", adamsPage=page[0])
 
 
 ns = ET.FunctionNamespace('http://foo.bar')
@@ -28,6 +33,7 @@ ns.prefix = 'foo'
 ns['get_tags'] = get_tags
 ns['url_for_tags'] = url_for_tags
 ns['url_for_bibl'] = url_for_bibl
+ns['url_for_adamsPage'] = url_for_adams_page
 
 
 XSL = ET.XSLT(
@@ -50,22 +56,68 @@ def excerpt_read(unit):
 @app.route("/search")
 def search():
     query = request.args.get("q", None)
-    tags = request.args.get("tags", None)
-    bibl = request.args.get("bibl", None)
     allow = None
     q = None
     page = request.args.get("page", 1, int)
+
+    facets = list([
+        (key, value)
+        for key in request.args.keys()
+        for value in request.args.getlist(key)
+        if key in {"tags", "anas", "author", "bibliography", "lemmas"} and value is not None
+    ])
 
     if query:
         qp = QueryParser("body", schema=index.schema)
         q = qp.parse(query)
 
-    if tags:
-        allow = Term("tags", tags)
-
-    if q or tags:
+    if facets:
+        allow = And(
+            [
+                Term(key, val)
+                for key, val in facets
+            ]
+        )
+    if q or facets:
         with index.searcher() as searcher:
-            results = searcher.search_page(q or allow, pagenum=page, pagelen=20, filter=allow)
-            return render_template("search.html", query=query, tags=tags, results=results)
+            results = searcher.search_page(q or allow, pagenum=page, pagelen=20, filter=allow, )
+            facet_tags = results.results.key_terms("tags", numterms=10)
+            facet_anas = results.results.key_terms("anas", numterms=10)
+            facet_author = results.results.key_terms("author", numterms=10)
+            facet_adams = results.results.key_terms("adamsPage", numterms=10)
+            facet_bibliography = results.results.key_terms("bibliography", numterms=10)
+            facet_lemmas = results.results.key_terms("lemmas", numterms=10)
+            return render_template(
+                "search.html",
+                query=query, results=results,
+                facets={
+                    "tags": {"data": facet_tags, "nice": "Tags"},
+                    "anas": {"data": facet_anas, "nice": "Central lemma"},
+                    "author": {"data": facet_author, "nice": "Author"},
+                    "adamsPage": {"data": facet_adams, "nice": "Adams' page"},
+                    "bibliography": {"data": facet_bibliography, "nice": "Bibliography"},
+                    "lemmas": {"data": facet_lemmas, "nice": "Lemma encountered"},
+                },
+                current_params=list([
+                    (key, value)
+                    for key in request.args.keys()
+                    for value in request.args.getlist(key)
+                    if key in {"tags", "anas", "author", "q", "bibliography", "lemmas", "adamsPage"}
+                ])
+            )
+    else:
+        with index.searcher() as searcher:
+            results = searcher.search_page(Every(), pagenum=page, pagelen=20)
+            facet_tags = results.results.key_terms("tags", numterms=10)
+            facet_anas = results.results.key_terms("anas", numterms=10)
+            facet_author = results.results.key_terms("author", numterms=10)
+            return render_template(
+                "search.html",
+                query=query, results=results,
+                facets={
+                    "tags": {"data": facet_tags, "nice": "Tags"},
+                    "anas": {"data": facet_anas, "nice": "Central lemma"},
+                    "author": {"data": facet_author, "nice": "Author"}
+                }
+            )
 
-    return render_template("search.html")

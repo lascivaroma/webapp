@@ -44,24 +44,35 @@
         <xsl:apply-templates select="biblScope"/>
     </xsl:template>
     <xsl:template match="author">
-        <xsl:apply-templates />,
+        <xsl:choose>
+            <xsl:when test="count(ancestor-or-self::bibl[@type = 'source']) = 1">
+                <xsl:apply-templates select="persName" />
+            </xsl:when>
+            <xsl:otherwise>
+                <xsl:apply-templates />
+            </xsl:otherwise>
+        </xsl:choose>
+        ,
     </xsl:template>
     <xsl:template match="persName[@xml:lang='eng']"/>
     <xsl:template match="idno[text() = 'nan']"/>
     <xsl:template match="idno[text() != 'nan']">
-        <a href="{./text()}" title="{@type}">@</a><xsl:text> </xsl:text>
+        <a href="{./text()}" title="{@type}">🔗</a><xsl:text> </xsl:text>
     </xsl:template>
     <xsl:template match="title">
         <i><xsl:apply-templates /></i>
     </xsl:template>
-    <xsl:template match="biblScope">, <xsl:apply-templates />
+    <xsl:template match="biblScope|biblscope">, <xsl:apply-templates />
     </xsl:template>
     <xsl:template match="bibl[not(@type='source')]">
         <dd>
             <xsl:apply-templates select="author"/>
             <xsl:apply-templates select="title"/>
-            <xsl:apply-templates select="biblScope"/>
-            <xsl:text> - </xsl:text><a href="{foo:url_for_bibl(@ref)}">Link</a>
+            <xsl:apply-templates select="biblScope | biblscope"/>
+            <xsl:text> - </xsl:text><a href="{foo:url_for_bibl(@ref)}">More with this book</a>
+            <xsl:if test="@ref='#adams'">
+               <xsl:text> </xsl:text> <a href="{foo:url_for_adamsPage(biblScope/text())}">More on this page</a>
+            </xsl:if>
         </dd>
     </xsl:template>
 </xsl:stylesheet>

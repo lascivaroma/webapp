@@ -1,7 +1,7 @@
 import os
 from flask import Flask
 
-from models.corpus import Excerpt, STORAGE
+from .models.corpus import Excerpt, STORAGE
 
 
 ROOT_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -12,4 +12,8 @@ app = Flask(
     template_folder=os.path.join(ROOT_DIR, "templates")
 )
 index = STORAGE.open_index(schema=Excerpt)
-import routes.main
+
+
+from . import filters
+from .routes import main
+from .cli import *

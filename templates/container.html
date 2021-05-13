@@ -4,6 +4,7 @@
 	<title></title>
 	<meta charset="utf-8">
 	<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/bootstrap.min.css")}}">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" />
 	<style type="text/css">
 		/* cyrillic-ext */
 		@font-face {
@@ -78,7 +79,7 @@
 							<a class="nav-link active" aria-current="page" href="{{ url_for('main') }}">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="#">Annotated Corpus</a>
+							<a class="nav-link" href="{{ url_for('search') }}">Annotated Corpus</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link" href="#">Lemmatized Priapea</a>
