@@ -5,7 +5,7 @@ from flask import Flask
 
 logger = logging.getLogger()
 
-from .models.corpus import Excerpt, STORAGE, INDEX_DIR, INDEX_NAME
+from .models.corpus import Excerpt, STORAGE, INDEX_DIR, INDEX_NAME, ExcerptPropertyNames
 
 
 ROOT_DIR = os.path.abspath(os.path.dirname(__file__))

@@ -4,7 +4,7 @@ from whoosh.qparser import QueryParser
 from whoosh.query import Term, And, Every
 import lxml.etree as ET
 
-from ..app import app, index, Excerpt, ROOT_DIR
+from ..app import app, index, Excerpt, ROOT_DIR, ExcerptPropertyNames
 
 
 def get_tags(_, tag_list):
@@ -51,6 +51,17 @@ def excerpt_read(unit):
     xml = ET.parse(os.path.join(ROOT_DIR, "data", "these-corpus", "data", unit))  # ToDo: sanity check
 
     return render_template("read.html", content=ET.tostring(XSL(xml), encoding=str).replace("[ ]", ""))
+
+
+@app.route("/index")
+def all_page():
+    page = request.args.get("page", 1, int)
+    with index.searcher() as searcher:
+        results = searcher.search_page(Every(), pagenum=page, pagelen=20, sortedby="adamsPage")
+        return render_template(
+            "all_pages.html",
+            results=results
+        )
 
 
 @app.route("/search")
@@ -107,7 +118,7 @@ def search():
             )
     else:
         with index.searcher() as searcher:
-            results = searcher.search_page(Every(), pagenum=page, pagelen=20)
+            results = searcher.search_page(Every(), pagenum=page, pagelen=20, sortedby="adamsPage")
             facet_tags = results.results.key_terms("tags", numterms=10)
             facet_anas = results.results.key_terms("anas", numterms=10)
             facet_author = results.results.key_terms("author", numterms=10)
@@ -121,3 +132,17 @@ def search():
                 }
             )
 
+
+@app.route("/indexes")
+@app.route("/indexes/<index_type>")
+def indexes(index_type=None):
+    if index_type and index_type in ExcerptPropertyNames:
+        with index.reader() as _index:
+            return render_template(
+                "indexes.html",
+                nice=ExcerptPropertyNames[index_type],
+                index_type=index_type,
+                keywords=_index.field_terms(index_type)
+            )
+    else:
+        return render_template("indexes_list.html", categories=ExcerptPropertyNames)

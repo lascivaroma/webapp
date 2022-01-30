@@ -9,7 +9,7 @@ STORAGE = FileStorage(INDEX_DIR)
 
 
 class Excerpt(SchemaClass):
-    id = ID(stored=True)
+    id = ID(stored=True, sortable=True)
     body = TEXT(stored=True)
     lemmatized = TEXT(stored=True)
     author = ID(stored=True, sortable=True)
@@ -19,4 +19,14 @@ class Excerpt(SchemaClass):
     anas = KEYWORD(stored=True, sortable=True)
     tags = KEYWORD(stored=True, sortable=True)
     bibliography = KEYWORD(stored=True)
-    adamsPage = NUMERIC(stored=True)
+    adamsPage = NUMERIC(stored=True, sortable=True)
+
+
+ExcerptPropertyNames = {
+    "author": "Author",
+    "title": "Work",
+    "lemmas": "Lemma",
+    "anas": "Analyzed lemma",
+    "tags": "Tags",
+    "adamsPage": "Adams' Page"
+}

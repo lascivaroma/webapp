@@ -1,0 +1,23 @@
+{% extends "container.html" %}
+
+{% block header %}
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-8">
+                <h2>{{ nice }}</h2>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block body %}
+
+<div class="row justify-content-md-center">
+    <div class="col-8">
+    <ul class="list-unstyled">
+        {% for kw in keywords %}
+            <li><a class="btn " href="{{ faceted_url('search', param_name=index_type, param_value=kw) }}"><i class="fas fa-caret-right"></i> {{ kw }}</a></li>
+        {% endfor %}
+    </ul>
+    </div>
+</div>
+{% endblock %}

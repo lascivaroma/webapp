@@ -1,0 +1,23 @@
+{% extends "container.html" %}
+
+{% block header %}
+    <div class="container">
+        <div class="row justify-content-md-center">
+            <div class="col-8">
+                <h2>List of browsable facets</h2>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block body %}
+
+<div class="row justify-content-md-center">
+    <div class="col-8">
+        <ul class="list-unstyled">
+            {% for index_type, nice in categories.items() %}
+                <li><a class="btn" href="{{ url_for('indexes', index_type=index_type) }}"><i class="fas fa-caret-right"></i> {{ nice }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

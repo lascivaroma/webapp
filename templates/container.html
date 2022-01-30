@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title></title>
+	<title>Lasciva Roma</title>
 	<meta charset="utf-8">
+    <meta name="description" content="Database about Latin sexuality">
+    <meta name="keywords" content="Latin, Sexuality, Vocabulary">
+    <meta name="author" content="Thibault Clérice">
 	<link rel="stylesheet" type="text/css" href="{{ url_for("static", filename="css/bootstrap.min.css")}}">
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/solid.min.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 	<style type="text/css">
 		/* cyrillic-ext */
 		@font-face {
@@ -79,14 +82,22 @@
 							<a class="nav-link active" aria-current="page" href="{{ url_for('main') }}">Home</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" href="{{ url_for('search') }}">Annotated Corpus</a>
+							<a class="nav-link" href="{{ url_for('all_page') }}">Excerpts</a>
 						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ url_for('search') }}">Search</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{{ url_for('indexes') }}">Index of keywords</a>
+						</li>
+                        <!--
 						<li class="nav-item">
 							<a class="nav-link" href="#">Lemmatized Priapea</a>
 						</li>
 						<li class="nav-item">
 							<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Is my excerpt sexual ? (Soon)</a>
 						</li>
+						-->
 					</ul>
 				</div>
 			</div>
@@ -105,7 +116,10 @@
 					<img src="{{ url_for("static", filename="images/leda.png")}}" alt="Roman oil lamp with Leda" class="leda" height="100%" width="auto" />
 				</div>
 				<div class="col-9">
-					COLOPHON
+					Application développée par Thibault Clérice et hébergée par l'École nationale des Chartes.<br />
+                    <a href="http://theses.fr/s226893">Thèse dont sont issues les données</a><br/>
+                    <a href="https://github.com/lascivaroma/exemplier/">Données sur github</a><br/>
+                    <a href="https://github.com/lascivaroma/webapp/">Application sur github</a><br/>
 				</div>
 			</div>
 		</div>
